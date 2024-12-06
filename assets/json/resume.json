@@ -46,6 +46,48 @@
   ],
   "publications": [
     {
+      "name": "Disentanglement by Nonlinear ICA with General Incompressible-flow Networks (GIN)",
+      "publisher": "International Conference on Learning Representations (ICLR)",
+      "releaseDate": "2020",
+      "url": "http://arxiv.org/abs/2001.04872",
+      "summary": "Using GIN to disentangle."
+    },
+    {
+      "name": "Better latent spaces for better autoencoders",
+      "publisher": "SciPost Physics",
+      "releaseDate": "2021",
+      "url": "http://arxiv.org/abs/2104.08291", 
+      "summary": "Introduction of Dirichlet VAE for better jet autoencoders."
+    },
+    {
+      "name": "Symmetries, safety, and self-supervision",
+      "publisher": "SciPost Physics",
+      "releaseDate": "2022",
+      "url": "http://arxiv.org/abs/2108.04253",
+      "summary": "JetCLR: Contrastive learning for jet physics."
+    },
+    {
+      "name": "A normalized autoencoder for LHC triggers",
+      "publisher": "SciPost Physics Core",
+      "releaseDate": "2023",
+      "url": "http://arxiv.org/abs/2206.14225",
+      "summary": "Using normalized autoencoders for fast and effective LHC triggers."
+    },
+    {
+      "name": "Jet Diffusion versus JetGPT--Modern Networks for the LHC",
+      "publisher": "arXiv preprint",
+      "releaseDate": "2023", 
+      "url": "http://arxiv.org/abs/2305.10475",
+      "summary": "Comparing diffusion and autoregressive models for event generation."
+    },
+    {
+      "name": "Lifting architectural constraints of injective flows",
+      "publisher": "International Conference on Learning Representations (ICLR)",
+      "releaseDate": "2024",
+      "url": "http://arxiv.org/abs/2306.01843",
+      "summary": "Train autoencoders like normalizing flows."
+    },
+    {
       "name": "Free-form flows: Make any architecture a normalizing flow",
       "publisher": "International Conference on Artificial Intelligence and Statistics (AISTATS)",
       "releaseDate": "2024",
@@ -53,18 +95,18 @@
       "summary": "Make any architecture a normalizing flow."
     },
     {
-      "name": "Lifting architectural constraints of injective flows",
-      "publisher": "International Conference on Learning Representations (ICLR)",
+      "name": "Learning Distributions on Manifolds with Free-Form Flows",
+      "publisher": "Advances in Neural Information Processing Systems (NeurIPS)",
       "releaseDate": "2024",
-      "url": "http://arxiv.org/abs/2306.01843",
-      "summary": "Make any architecture a normalizing flow (including bottlenecks)."
+      "url": "http://arxiv.org/abs/2312.09852",
+      "summary": "Learn distributions on Riemannian manifolds."
     },
     {
-      "name": "Disentanglement by Nonlinear ICA with General Incompressible-flow Networks (GIN)",
-      "publisher": "International Conference on Learning Representations (ICLR)",
-      "releaseDate": "2020",
-      "url": "http://arxiv.org/abs/2001.04872",
-      "summary": "Using GIN to disentangle."
+      "name": "Learning distances from data with normalizing flows and score matching",
+      "publisher": "arXiv preprint",
+      "releaseDate": "2024",
+      "url": "http://arxiv.org/abs/2407.09297",
+      "summary": "Efficient and accurate density-based distance estimation."
     }
   ],
   "skills": [
