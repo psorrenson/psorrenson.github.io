@@ -42,7 +42,9 @@
             <h1>Free-Form Flows</h1>
             <time datetime="2024-12-30">December 30, 2024</time>
 
-            Free-form flows are a new class of generative models. They are fast, flexible, and can be used for a wide range of applications. They are inspired by normalizing flows, but do away with the inflexible architecture. There are currently three papers that have been published on the topic:
+            Free-form flows are a new class of generative models which I developed with my collaborators at Heidelberg University. They are fast, flexible, and can be used for a wide range of applications. So far we have successfully generated images, molecules, tabular data, and a wide variety of data on manifolds, such as spheres, tori, and meshes.
+            <br><br>
+            Free-form flows are inspired by normalizing flows, but do away with the inflexible architecture. There are currently three papers that have been published on the topic:
             <ul>
                 <li>
                     <a href="https://proceedings.mlr.press/v238/draxler24a.html">Free-Form Flows: Make Any Architecture a Normalizing Flow</a>
@@ -55,7 +57,87 @@
                 </li>
             </ul>
             The code to reproduce the experiments in the papers is available on <a href="https://github.com/vislearn/FFF">GitHub</a>.
+            <br><br>
+            Here I'll provide a high-level overview of the approach. I'm going to assume knowledge of the basics of machine learning and generative modeling, and I will state some things as fact which might not be obvious to everyone. I might cover some of the topics in more detail in future posts.
 
+            <!-- <h2>Maximum likelihood-based generative modeling</h2>
+            In generative modeling, we are given a dataset of samples \( \mathcal{D} = \{ x_i \}_{i=1}^N \) and we want to learn a model \( p_\theta \) that can generate new samples from the same distribution.
+            <br><br>
+            One way to do this is to learn a model that maximizes the log-likelihood of the data, i.e.
+            \[
+            \theta^* = \arg \max_\theta \mathbb{E}_{x \sim \mathcal{D}} \log p_\theta(x)
+            \]
+            Many models either directly target or approximate this objective. Exact maximum likelihood models include normalizing flows, autoregressive models, and energy-based models. Approximations include variational autoencoders, diffusion models, and flow matching. Only very few models cannot be interpreted as maximum likelihood models, with GANs being the most prominent example. -->
+            
+            <h2>Normalizing flows</h2>
+            Most of the models that are used for generative modeling are based on maximum likelihood, whether in the exact or approximate sense. For example, autoregressive models like ChatGPT are trained to maximize the log-likelihood of the training data (at least in the pre-training phase) and text-to-image diffusion models like DALL-E can be interpreted as approximations to the exact maximum likelihood objective. Out of all the most popular generative models, only GANs are not based on maximum likelihood, and they have fallen out of favor in the last few years.
+            <br><br>
+            Normalizing flows take a special place in the landscape of exact maximum likelihood models, since they allow for very fast sampling and inference (by inference, I mean the computation of the log-likelihood). This is unusual, since most models are able to offer either fast sampling or fast inference, but not both.
+            <br><br>
+            In order to achieve this, normalizing flows are designed as invertible transport models, meaning that they transform the data distribution into a simple target distribution, such as a standard normal distribution. It's easy to see why sampling is fast: all we need to do is sample from the target distribution and apply the inverse of the flow to get a sample from the data distribution.
+            <br><br>
+            Inference is also fast because the log-likelihood can be computed analytically, thanks to the change of variables formula for probability densities. This formula states that, given an invertible transformation \( f \) that maps \( x \) to \( z \), the log-likelihood of \( x \) can be computed as
+            \[
+            \log p(x) = \log p(z) + \log \left| f'(x) \right|
+            \]
+            where \( \left| f'(x) \right| \) is the absolute value of the Jacobian determinant of the transformation, also know as the Jacobian.
+            <br><br>
+            <!-- This can be seen by considering that the amount of probability mass in a small region doesn't change under a diffeomorphism, and that the absolute value of the Jacobian determinant is the factor by which the volume of the region is scaled by. Mathematically, this is expressed as
+            \[
+            \left| p(x) dx \right| = \left| p(z) dz \right|
+            \]
+            where \( z = f(x) \). If we rearrange this equation, we get
+            \[
+            p(x) = p(z) \left| \frac{dz}{dx} \right| = p(z) \left| f'(x) \right|
+            \]
+            which is the same as above once we take the logarithm.
+            <br><br> -->
+            A popular way to build normalizing flows is to stack multiple transformations, each parameterized by a neural network. Each transformation is itself invertible, with an easy-to-compute inverse and a simple Jacobian. This is often achieved by coupling blocks, which change half of the input at a time, dependent on the other half. Due to these requirements, the architecture of the normalizing flow is very constrained, and it is not always easy to incorporate domain knowledge or the latest advancements in neural network architecture design. For example, if you want to generate molecules, you might want to use a graph neural network which is equivariant to the symmetries of the molecule, but it takes a lot of effort to incorporate this into the architecture of a standard coupling-based normalizing flow.
+
+            <h2>Free-form flows</h2>
+            Enter free-form flows. These models allow you train a free-form neural network like a normalizing flow, that is, you end up with an invertible neural network trained to maximize the log-likelihood of the data. And we can use any architecture we want, there are no constraints, except for preserving the dimensionality of the input.
+            <br><br>
+            We achieve this by relaxing some requirements. Firstly, instead of using exactly invertible architectures, we settle for approximate invertibility, achieved by using two networks \( f \) and \( g \) which are coupled by a reconstruction loss. Secondly, in order to train via maximum likelihood, we need to compute the log-likelihood, which requires the Jacobian determinant. We approximate the gradient of this quantity via Jacobi's formula, which leaves us with a tractable objective.
+            <br><br>
+            The first point is easy to understand: this is simply the principle of autoencoders. The main difference is that autoencoders are usually thought of as a dimensionality reduction technique, while here we don't reduce the dimensionality, but use it to build a generative model.
+            <br><br>
+            The second point is more difficult, as it requires chaining together several tricks. First we notice that the difficult part of the change of variables formula is the computation of the Jacobian. A key idea is to use Jacobi's formula, which states that for a matrix \( A \) parameterized by \( t \),
+            \[
+            \frac{d}{dt} \log \left| A(t) \right| = \text{tr} \left( A(t)^{-1} \frac{d A(t)}{dt} \right)
+            \]
+            where \( \text{tr} \) denotes the trace of the matrix. When \( t \) is a parameter of a neural network, this formula allows us to compute the gradient of the Jacobian without having to compute the Jacobian itself. And since we are doing gradient descent, all we need is a way to compute the gradient of the loss function.
+            <br><br>
+            If we apply Jacobi's formula to the Jacobian of the flow, we get
+            \[
+            \nabla_\theta \log \left| f'(x) \right| = \text{tr} \left( f'(x)^{-1} \nabla_\theta f'(x) \right)
+            \]
+            where \( \theta \) are the parameters of the neural network. 
+            <br><br>
+            Inside the trace, we have the inverse of the Jacobian matrix \( f'(x) \), which is difficult to compute since it involves a matrix inversion. However, if \( f \) is invertible, we can use the fact that \( f'(x)^{-1} = \left( f^{-1} \right)' (f(x)) \), and that \( g \approx f^{-1} \) to approximate the gradient as
+            \[
+            \nabla_\theta \log \left| f'(x) \right| \approx \text{tr} \left( g'(f(x)) \nabla_\theta f'(x) \right)
+            \]
+            The remaining tricks are the use of stop-gradient, and the Hutchinson-Skilling trace estimator, which states that
+            \[
+            \text{tr} \left( A \right) \approx v^T A v
+            \]
+            for a random vector \( v \), as long as \( \mathbb{E} \left[ v v^T \right] = I \). A standard choice is to use a standard normal vector. The approximation is exact in expectation over \( v \).
+            <br><br>
+            This allows us to approximate the gradient of the Jacobian as
+            \[
+            \nabla_\theta \log \left| f'(x) \right| \approx v^T g'(f(x)) \nabla_\theta f'(x) v = \nabla_\theta v^T \mathtt{SG}[g'(f(x))] f'(x) v
+            \]
+            where \( \mathtt{SG} \) is the stop-gradient operator.
+            <br><br>
+            In the end this gives a tractable surrogate objective for the log-likelihood, which has the same gradients as the exact objective, as long as the network \( g \) is close to being an exact inverse of \( f \).
+            <br><br>
+            Putting this all together, we get a loss function that can be minimized to train a free-form flow, which is given by
+            \[
+            \mathcal{L} = \mathbb{E}_{x \sim \mathcal{D}} \left[ -\log p(f(x)) - v^T \mathtt{SG}[g'(f(x))] f'(x) v + \beta \left\| g(f(x)) - x \right\|^2 \right]
+            \]
+            where \( \mathcal{D} \) is the dataset and \( \beta \) is a hyperparameter that controls the strength of the reconstruction loss.
+
+            <!-- <img src="overview.jpg" alt="Overview of Free-Form Flows" style="max-width: 100%; height: auto; margin-top: 20px;"> -->
         </article>
     </div>
 </body>
