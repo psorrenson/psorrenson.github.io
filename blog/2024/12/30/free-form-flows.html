@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Free-Form Flows</title>
+    <link rel="stylesheet" href="../../../../main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "\\(", right: "\\)", display: false},
+                    {left: "\\[", right: "\\]", display: true}
+                ],
+                throwOnError: false
+            });
+        });
+    </script>
+    <style>
+        @media (max-width: 600px) {
+            article {
+                font-size: 16px;
+            }
+
+            .katex-display {
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="../../../../index.html">About Me</a>
+            <a href="../../../../blog.html">Blog</a>
+        </nav>
+
+        <article>
+            <h1>Free-Form Flows</h1>
+            <time datetime="2024-12-30">December 30, 2024</time>
+
+            Free-form flows are a new class of generative models. They are fast, flexible, and can be used for a wide range of applications. They are inspired by normalizing flows, but do away with the inflexible architecture. There are currently three papers that have been published on the topic:
+            <ul>
+                <li>
+                    <a href="https://proceedings.mlr.press/v238/draxler24a.html">Free-Form Flows: Make Any Architecture a Normalizing Flow</a>
+                </li>
+                <li>
+                    <a href="https://openreview.net/forum?id=kBNIx4Biq4">Lifting Architectural Constraints of Injective Flows</a>
+                </li>
+                <li>
+                    <a href="https://arxiv.org/abs/2312.09852">Learning Distributions on Manifolds with Free-Form Flows</a>
+                </li>
+            </ul>
+            The code to reproduce the experiments in the papers is available on <a href="https://github.com/vislearn/FFF">GitHub</a>.
+
+        </article>
+    </div>
+</body>
+</html> 

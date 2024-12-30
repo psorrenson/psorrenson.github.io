@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About Me</title>
+    <link rel="stylesheet" href="main.css">
+    <style>
+        .container {
+            text-align: center;
+        }
+
+        .profile-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 20px 0;
+        }
+
+        .resume-link {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            text-decoration: none;
+            color: black;
+            border-radius: 5px;
+        }
+
+        .resume-link:hover {
+            background-color: #e0e0e0;
+        }
+
+        @media (max-width: 600px) {
+            .profile-photo {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <h1>Peter Sorrenson</h1>
+        <nav>
+            <a href="blog.html">Blog</a>
+        </nav>
+        
+        <img src="images/profile.webp" alt="Profile photo" class="profile-photo">
+        
+        <p>I'm a PhD student in machine learning, working at the <a href="https://hci.iwr.uni-heidelberg.de/vislearn/" target="_blank">Computer Vision and Learning Lab</a> of Heidelberg University. </p>
+
+        <p>My research interests include generative models, geometric deep learning, and the application of machine learning to the sciences, particularly particle physics. </p>
+
+        <p>In my spare time I play in an acoustic folk duo with my wife, sing in choirs, and cook Italian food.</p>
+        
+        <a href="files/resume.pdf" class="resume-link">Download CV</a>
+    </div>
+</body>
+</html> 
