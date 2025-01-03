@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Free-Form Flows</title>
+    <link rel="stylesheet" href="../../../../main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "\\(", right: "\\)", display: false},
+                    {left: "\\[", right: "\\]", display: true}
+                ],
+                throwOnError: false
+            });
+        });
+    </script>
+    <style>
+        @media (max-width: 600px) {
+            article {
+                font-size: 16px;
+            }
+
+            .katex-display {
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+        }
+
+        figure {
+            margin: 2em 0;
+            width: 100%;
+        }
+        
+        figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="../../../../index.html">About Me</a>
+            <a href="../../../../blog.html">Blog</a>
+        </nav>
+        <article>
+            <h1>The Change of Variables Formula for Probability Distributions</h1>
+            <time datetime="2025-01-01">January 1, 2025</time>
+
+            The change of variables formula for probability distributions tells us how to transform the probability distribution of a random variable when we apply a function to it. This is a very useful thing to know in machine learning, especially when working with generative models, where we are trying to model the probability distribution of some data.
+            <br><br>
+            Normalizing flows are a great example of this.
+
+        </article>
+    </div>
+</body>
+</html> 
